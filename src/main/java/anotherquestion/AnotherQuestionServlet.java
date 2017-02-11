@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * Created by icondor on 04/02/17.
@@ -26,7 +27,14 @@ public class AnotherQuestionServlet extends HttpServlet {
 
             //fac jsonul
             JSONObject json = new JSONObject();
-            json.put("questions",SingleList.getInstance().getIntrebari());
+
+            //json.put("questions",SingleList.getInstance().getIntrebari());
+
+            IonelDB idb = new IonelDB();
+            List listaCititaDinDB =  idb.getFaqList(); // returneaza o lista cu tot ce e in db
+
+            json.put("questions",listaCititaDinDB);
+
             String result=json.toString();
             System.out.println("result:"+result);
             returnJsonResponse(response, result);
@@ -46,10 +54,13 @@ public class AnotherQuestionServlet extends HttpServlet {
             String intrebarea = request.getParameter("value");
 
 
-            SingleList.getInstance().addIntrebare(intrebarea);
+          //  SingleList.getInstance().addIntrebare(intrebarea);
 
+           // SingleList.getInstance().afiseza();
 
-            SingleList.getInstance().afiseza();
+            IonelDB idb = new IonelDB();
+            idb.insert(intrebarea);
+
             System.out.println("------------");
         }
 
